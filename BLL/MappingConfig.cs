@@ -1,0 +1,25 @@
+﻿using AutoMapper;
+using DAL.ViewModel;
+using Data.Model;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace BLL
+{
+    public class MappingConfig :Profile
+    {
+        public MappingConfig()
+        {
+            CreateMap<Book, BookViewModel>().ForMember(dest => dest.BookCates,
+                opt => opt.MapFrom(src => src.BookCates)).ReverseMap();
+
+            CreateMap<BookCategory, BookCategoryViewModel>().
+               ForMember(dest => dest.CategoryName,
+               opt => opt.MapFrom(src => src.Category != null ? src.Category.Name : "Unknown"))
+               .ReverseMap();
+        }
+    }
+}
