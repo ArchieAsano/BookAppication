@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using DAL.ViewModel;
+using DAL.DTO;
 using Data.Model;
 using System;
 using System.Collections.Generic;
@@ -20,6 +20,8 @@ namespace BLL
                ForMember(dest => dest.CategoryName,
                opt => opt.MapFrom(src => src.Category != null ? src.Category.Name : "Unknown"))
                .ReverseMap();
+            CreateMap<ApplicationUser, UserRegisterModel>().ReverseMap();
+            CreateMap<ApplicationUser, AccountViewModel>().ReverseMap();
         }
     }
 }

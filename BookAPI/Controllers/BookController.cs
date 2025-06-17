@@ -1,4 +1,5 @@
 ﻿using BLL.Interface;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -14,6 +15,7 @@ namespace BookAPI.Controllers
             _bookService = bookService;
 
         }
+        [Authorize]
         [HttpGet("GetAllBook")]
         public async Task<IActionResult> GetAllBook()
         {

@@ -9,7 +9,7 @@ namespace Data.Model
 {
     public class Role: BaseEntity
     {
-        string Name { get; set; }
+        public string Name { get; set; }
         public virtual ICollection<ApplicationUser> Users { get; set; }
 
     }

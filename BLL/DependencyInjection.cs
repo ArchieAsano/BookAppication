@@ -1,6 +1,7 @@
 ﻿using BLL.Interface;
 using BLL.Services;
 using DAL.Interface;
+using DAL.Library;
 using DAL.Repository;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -37,7 +38,10 @@ namespace BLL
         }
         public static void AddServices(this IServiceCollection services, IConfiguration configuration)
         {
+            services.AddSingleton<ImageUtil>();
+
             services.AddScoped<IBookService, BookService>();
+            services.AddScoped<IAccountService,AcconutService>();
         }
 
     }
