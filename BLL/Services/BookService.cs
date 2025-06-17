@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using BLL.Interface;
 using DAL.Interface;
-using DAL.ViewModel;
+using DAL.DTO;
 using Data.Model;
 using System;
 using System.Collections.Generic;
@@ -34,5 +34,7 @@ namespace BLL.Services
             var result = _mapper.Map<BookViewModel>(book);
             return result;
         }
+
+      
     }
 }
