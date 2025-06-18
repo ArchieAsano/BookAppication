@@ -9,6 +9,7 @@ namespace DAL.DTO
 {
     public class CartViewModel
     {
+        public int Id { get; set; }
         public virtual List<CartDetailViewModel> CartDetails { get; set; }
 
     }

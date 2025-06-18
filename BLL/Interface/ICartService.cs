@@ -12,6 +12,8 @@ namespace BLL.Interface
         Task CreateUserCart(Guid Userid);
         Task AddBookToCart(AddToCartDTO addToCartDTO, Guid userid); 
         Task<CartViewModel> GetUserCart(Guid userid);
+        //Remove book from cart
+        Task RemoveBookFromCart(int bookid, int cartid);
         
     }
 }

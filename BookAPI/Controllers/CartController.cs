@@ -38,5 +38,24 @@ namespace BookAPI.Controllers
             return new OkObjectResult(cart);
 
         }
+        [Authorize]
+        [HttpDelete("RemoveCartDetail")]
+        public async Task<IActionResult> RemoveCartDetail([FromQuery]int bookid)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+            try
+            {
+                var userid = User.GetUserId();
+                var cart = await _cartService.GetUserCart(userid);
+                await _cartService.RemoveBookFromCart(bookid, cart.Id);
+                return new OkObjectResult("Remove cart detail");
+            }
+            catch (Exception ex)
+            {
+                return new BadRequestObjectResult(ex.Message);
+            }
+           
+        }
     }
 }

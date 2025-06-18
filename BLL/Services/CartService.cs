@@ -55,5 +55,11 @@ namespace BLL.Services
             var result = _mapper.Map<CartViewModel>(cart);
             return result;
         }
+
+        public async Task RemoveBookFromCart(int bookid, int cartid)
+        {          
+            await _unitOfWork.GetRepository<CartDetail>().DeleteAsync(cartid,bookid);
+            await _unitOfWork.SaveAsync();
+        }
     }
 }
