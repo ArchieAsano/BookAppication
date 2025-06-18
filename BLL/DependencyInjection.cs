@@ -42,6 +42,7 @@ namespace BLL
 
             services.AddScoped<IBookService, BookService>();
             services.AddScoped<IAccountService,AcconutService>();
+            services.AddScoped<ICartService,CartService>();
         }
 
     }

@@ -59,6 +59,21 @@ namespace BLL.Services
             string hashedPassword = _passwordHasher.HashPassword(user, userRegisterModel.Password);
             user.PasswordHash = hashedPassword;
             await _unitOfWork.GetRepository<ApplicationUser>().AddAsync(user);
+
+            var role = await _unitOfWork.GetRepository<Role>().GetByPropertyAsync(r=>r.Id == user.RoleId);
+            string roleName = role.Name;
+
+            if (roleName == "Customer")
+            {
+                var cart = new Cart()
+                {
+                    UserId = user.Id,
+                    CreatedBy = user.UserName,
+                    CreatedTime = DateTime.UtcNow,
+
+                };
+                await _unitOfWork.GetRepository<Cart>().AddAsync(cart);
+            }
             await _unitOfWork.SaveAsync();
         }
         public bool VerifyPassword(ApplicationUser user, string inputPassword)
