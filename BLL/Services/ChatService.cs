@@ -31,16 +31,16 @@ namespace BLL.Services
             return result;
         }
 
-        public async Task SendMessage(Guid SenderId, Guid ReceiverId, string message)
+        public async Task SendMessage(Guid SenderId, SendMessageModel sendMessageModel)
         {
-            var chat = await _unitOfWork.GetRepository<Chat>().GetByPropertyAsync(c => (c.Participants1 == SenderId && c.Participants1 == ReceiverId)
-          || (c.Participants1 == ReceiverId && c.Participants2 == SenderId));
+            var chat = await _unitOfWork.GetRepository<Chat>().GetByPropertyAsync(c => (c.Participants1 == SenderId && c.Participants1 == Guid.Parse(sendMessageModel.ReceiverId))
+          || (c.Participants1 == Guid.Parse(sendMessageModel.ReceiverId) && c.Participants2 == SenderId));
             if(chat == null)
             {
                 chat = new Chat()
                 {
                     Participants1 = SenderId,
-                    Participants2 = ReceiverId,
+                    Participants2 = Guid.Parse(sendMessageModel.ReceiverId),
                 };
                 await _unitOfWork.GetRepository<Chat>().AddAsync(chat);
                 await _unitOfWork.SaveAsync();
@@ -49,7 +49,7 @@ namespace BLL.Services
             {
                 ChatId = chat.Id,
                 SenderId = SenderId,
-                Content = message,
+                Content = sendMessageModel.Content,
                 CreatedTime = DateTime.UtcNow,
             };
             await _unitOfWork.GetRepository<Message>().AddAsync(newmessage);

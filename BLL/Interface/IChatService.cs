@@ -10,7 +10,7 @@ namespace BLL.Interface
 {
     public interface IChatService
     {
-        Task SendMessage(Guid SenderId, Guid ReceiverId, string message);
+        Task SendMessage(Guid SenderId, SendMessageModel sendMessageModel);
         Task<ChatViewModel> GetUserChat(Guid UserId);
     }
 }

@@ -1,4 +1,5 @@
 ﻿using BLL.Interface;
+using DAL.DTO;
 using DAL.Library;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -17,14 +18,14 @@ namespace BookAPI.Controllers
         }
         [Authorize]
         [HttpPost("SendMessage")]
-        public async Task<IActionResult> SendMessage([FromQuery] Guid ReceiverId, [FromBody] string Message)
+        public async Task<IActionResult> SendMessage( [FromBody] SendMessageModel Message)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
             var senderId = User.GetUserId();
             try
             {
-                await _chatService.SendMessage(senderId, ReceiverId, Message);
+                await _chatService.SendMessage(senderId, Message);
                 return new OkObjectResult("Send successfully");
             }
             catch (Exception ex)
