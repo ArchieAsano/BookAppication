@@ -11,11 +11,9 @@ namespace BookAPI.Hubs
     public class ChatHub:Hub
     {
         private readonly HttpClient _httpClient;
-        private readonly IChatService _chatService;
-        public ChatHub(HttpClient httpClient, IChatService chatService)
+        public ChatHub(HttpClient httpClient)
         {
             _httpClient = httpClient;
-            _chatService = chatService;
         }
         public async Task SendMessage(SendMessageModel sendMessage, string token, string senderid)
         {
