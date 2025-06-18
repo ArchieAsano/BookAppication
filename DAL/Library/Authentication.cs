@@ -73,10 +73,10 @@ namespace DAL.Library
                 Token = accessTokenString,
             };
         }
-        public static int GetUserId(this ClaimsPrincipal user)
+        public static Guid GetUserId(this ClaimsPrincipal user)
         {
             var userIdClaim = user.Claims.FirstOrDefault(c => c.Type == "id");
-            return int.TryParse(userIdClaim?.Value, out int userId) ? userId : 0;
+            return Guid.TryParse(userIdClaim?.Value, out Guid userId) ? userId : Guid.Empty;
         }
         public static string GetUserEmail(this ClaimsPrincipal user)
         {

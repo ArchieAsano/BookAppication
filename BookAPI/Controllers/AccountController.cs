@@ -12,7 +12,7 @@ namespace BookAPI.Controllers
     public class AccountController : ControllerBase
     {
         private readonly IAccountService _accountService;
-        public AccountController(IAccountService accountService)
+        public AccountController(IAccountService accountService, ICartService cartService)
         {
             _accountService = accountService;
         }
@@ -22,6 +22,7 @@ namespace BookAPI.Controllers
             try
             {
                 await _accountService.RegisterAccount(userRegisterModel);
+                
                 return Created();
             }
             catch (Exception ex)

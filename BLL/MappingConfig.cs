@@ -22,6 +22,11 @@ namespace BLL
                .ReverseMap();
             CreateMap<ApplicationUser, UserRegisterModel>().ReverseMap();
             CreateMap<ApplicationUser, AccountViewModel>().ReverseMap();
+            CreateMap<Cart,CartViewModel>().ReverseMap();
+            CreateMap<CartDetail,CartDetailViewModel>()
+                .ForMember(dest=>dest.BookName, 
+                opt=>opt.MapFrom(src=>src.Book != null ? src.Book.Name :"Unknown"))
+                .ReverseMap();
         }
     }
 }
