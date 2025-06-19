@@ -6,6 +6,7 @@ using Microsoft.OpenApi.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using BookAPI.Hubs;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -18,6 +19,7 @@ builder.Services.AddApplication(builder.Configuration);
 
 builder.Services.AddDbContext<BookStoreDBContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+builder.Services.AddSignalR();
 builder.Services.Configure<CloudinarySettings>(
     builder.Configuration.GetSection("Cloudinary"));
 builder.Services.Configure<JWTSettings>(
@@ -52,9 +54,18 @@ builder.Services.AddSwaggerGen(options =>
             new List<string>()
         }
     });
-    
-
-
+});
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(
+        builder =>
+        {
+            builder.WithOrigins("http://localhost:5500", "https://localhost:7159")
+                .SetIsOriginAllowed(origin => true)
+                .AllowAnyHeader()
+                .WithMethods("GET", "POST")
+                .AllowCredentials();
+        });
 });
 builder.Services.AddAuthentication(x =>
 {
@@ -97,11 +108,15 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-
+app.UseRouting();
 app.UseHttpsRedirection();
-
+app.UseCors();
+app.UseAuthentication();
 app.UseAuthorization();
-
 app.MapControllers();
+app.MapHub<ChatHub>("/chathub", opt =>
+{
+    opt.Transports = Microsoft.AspNetCore.Http.Connections.HttpTransportType.WebSockets;
+});
 
 app.Run();

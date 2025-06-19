@@ -27,6 +27,10 @@ namespace BLL
                 .ForMember(dest=>dest.BookName, 
                 opt=>opt.MapFrom(src=>src.Book != null ? src.Book.Name :"Unknown"))
                 .ReverseMap();
+            CreateMap<Chat, ChatViewModel>().ReverseMap();
+            CreateMap<Message,MessageViewModel>().ForMember(dest => dest.SenderName,
+               opt => opt.MapFrom(src => src.Sender != null ? src.Sender.UserName : "Unknown"))
+                .ReverseMap();
         }
     }
 }
