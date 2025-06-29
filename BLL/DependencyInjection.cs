@@ -44,6 +44,7 @@ namespace BLL
             services.AddScoped<IAccountService,AcconutService>();
             services.AddScoped<ICartService,CartService>();
             services.AddScoped<IChatService,ChatService>();
+            services.AddScoped<IOrderSeervice, OrderService>();
         }
 
     }

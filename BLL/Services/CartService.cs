@@ -24,18 +24,26 @@ namespace BLL.Services
         {
             var book = await _unitOfWork.GetRepository<Book>().GetByPropertyAsync(b=>b.Id == addToCartDTO.BookId);
             var cart = await _unitOfWork.GetRepository<Cart>().GetByPropertyAsync(c=>c.UserId == userid);
-
-            //if(cart == null) await CreateUserCart(userid);
-
-            var newcartdetails = new CartDetail()
+            var existedDetails = await _unitOfWork.GetRepository<CartDetail>().GetByPropertyAsync(d=>d.CartId == cart.Id && d.BookId == book.Id);
+            if (existedDetails != null)
             {
-                CartId = cart.Id,
-                BookId = addToCartDTO.BookId,
-                Quatity = addToCartDTO.Quantity,
-                Total = book.Price*addToCartDTO.Quantity,               
-            };
-            await _unitOfWork.GetRepository<CartDetail>().AddAsync(newcartdetails);
-            await _unitOfWork.SaveAsync();
+                existedDetails.Quatity += addToCartDTO.Quantity;
+                await _unitOfWork.SaveAsync();
+
+            }
+            else
+            {
+                var newcartdetails = new CartDetail()
+                {
+                    CartId = cart.Id,
+                    BookId = addToCartDTO.BookId,
+                    Quatity = addToCartDTO.Quantity,
+                    Total = book.Price * addToCartDTO.Quantity,
+                };
+                await _unitOfWork.GetRepository<CartDetail>().AddAsync(newcartdetails);
+                await _unitOfWork.SaveAsync();
+            }
+            
         }
 
         public async Task CreateUserCart(Guid Userid)
