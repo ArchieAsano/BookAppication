@@ -9,6 +9,7 @@ namespace DAL.DTO
 {
     public class CartDetailViewModel
     {
+        public string BookId { get; set; }
         public string BookName { get; set; }
         public int Quatity { get; set; }
         public decimal Total { get; set; }
