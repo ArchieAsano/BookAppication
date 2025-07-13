@@ -6,7 +6,6 @@ using Microsoft.AspNetCore.Mvc;
 namespace BookAPI.Controllers
 {
     [Route("api/[controller]")]
-    [ApiController]
     public class BookController : ControllerBase
     {
         private readonly IBookService _bookService;
@@ -15,7 +14,6 @@ namespace BookAPI.Controllers
             _bookService = bookService;
 
         }
-        [Authorize]
         [HttpGet("GetAllBook")]
         public async Task<IActionResult> GetAllBook()
         {
