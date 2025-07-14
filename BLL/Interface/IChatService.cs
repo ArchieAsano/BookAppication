@@ -11,6 +11,6 @@ namespace BLL.Interface
     public interface IChatService
     {
         Task SendMessage(Guid SenderId, SendMessageModel sendMessageModel);
-        Task<ChatViewModel> GetUserChat(Guid UserId);
+        Task<ChatViewModel> GetUserChat(Guid SenderId, Guid ReciverId);
     }
 }

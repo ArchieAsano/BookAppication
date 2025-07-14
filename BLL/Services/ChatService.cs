@@ -21,11 +21,11 @@ namespace BLL.Services
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<ChatViewModel> GetUserChat(Guid UserId)
+        public async Task<ChatViewModel> GetUserChat(Guid SenderId, Guid ReciverId)
         {
-            var chat = await _unitOfWork.GetRepository<Chat>().GetByPropertyAsync(
-                c=>c.Participants1 == UserId || c.Participants2 == UserId,
-                includeProperties: "Messages.Sender");
+            var chat = await _unitOfWork.GetRepository<Chat>().GetByPropertyAsync(c => (c.Participants1 == SenderId && c.Participants2 == ReciverId)
+          || (c.Participants1 == ReciverId && c.Participants2 == SenderId),
+                includeProperties: "Messages,Messages.Sender");
             if (chat == null) return null;
             var result = _mapper.Map<ChatViewModel>(chat);
             return result;
@@ -33,7 +33,7 @@ namespace BLL.Services
 
         public async Task SendMessage(Guid SenderId, SendMessageModel sendMessageModel)
         {
-            var chat = await _unitOfWork.GetRepository<Chat>().GetByPropertyAsync(c => (c.Participants1 == SenderId && c.Participants1 == Guid.Parse(sendMessageModel.ReceiverId))
+            var chat = await _unitOfWork.GetRepository<Chat>().GetByPropertyAsync(c => (c.Participants1 == SenderId && c.Participants2 == Guid.Parse(sendMessageModel.ReceiverId))
           || (c.Participants1 == Guid.Parse(sendMessageModel.ReceiverId) && c.Participants2 == SenderId));
             if(chat == null)
             {
