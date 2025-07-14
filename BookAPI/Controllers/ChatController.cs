@@ -36,12 +36,12 @@ namespace BookAPI.Controllers
 
         [Authorize]
         [HttpGet("GetUserChat")]
-        public async Task<IActionResult> GetUserChat()
+        public async Task<IActionResult> GetUserChat([FromQuery] string RecieverId)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
             var senderId = User.GetUserId();
-            var chat = await _chatService.GetUserChat(senderId);
+            var chat = await _chatService.GetUserChat(senderId,Guid.Parse(RecieverId));
             if (chat == null) return new NotFoundObjectResult("Can not found chat");
             return new OkObjectResult(chat);
         }
