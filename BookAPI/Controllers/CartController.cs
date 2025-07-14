@@ -57,5 +57,18 @@ namespace BookAPI.Controllers
             }
            
         }
+        [Authorize]
+        [HttpGet("CheckCart")]
+        public async Task<IActionResult> CheckCart()
+        {
+            var userId = User.GetUserId();
+            var cart = await _cartService.GetUserCart(userId);
+            if (cart != null && cart.CartDetails.Any())
+            {
+                return Ok(true);
+            }
+            return Ok(false);
+        }
+
     }
 }
