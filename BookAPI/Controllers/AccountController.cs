@@ -89,5 +89,23 @@ namespace BookAPI.Controllers
                 data = account
             });
         }
+
+        [Authorize]
+        [HttpGet("GetUserInfo")]
+        public async Task<IActionResult> GetUserInfo()
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            var email = User.GetUserEmail();
+            var account = await _accountService.GetAccount(email);
+
+            return Ok(new
+            {
+                success = true,
+                message = "Lấy thông tin người dùng thành công!",
+                data = account
+            });
+        }
     }
 }
